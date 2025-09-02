@@ -24,7 +24,6 @@ class GreneApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      // 🔑 Verifica login antes de decidir a tela inicial
       home: FutureBuilder<bool>(
         future: _isLoggedIn(),
         builder: (context, snapshot) {

@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class ApiService {
+  
   static const String baseUrl = "http://127.0.0.1:8000/api";
 
-  // 🔑 Login
+  // Login
   static Future<bool> login(String username, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/autenticar/"),
@@ -27,13 +29,13 @@ class ApiService {
     }
   }
 
-  // 🔑 Pegar token salvo
+  // Pegar token salvo
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("accessToken");
   }
 
-  // 🌱 Listar plantas
+  // Listar plantas
   static Future<List<dynamic>> getPlantas() async {
     final token = await getToken();
     final response = await http.get(
@@ -48,7 +50,7 @@ class ApiService {
     }
   }
 
-  // 🪴 Criar vaso
+  // Criar vaso
   static Future<Map<String, dynamic>> criarVaso(String name, int plantId) async {
     final token = await getToken();
     final response = await http.post(

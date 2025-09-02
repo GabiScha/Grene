@@ -6,6 +6,8 @@ import 'package:grene/models/planta.dart';
 class PlantaService {
 final String baseUrl = "http://127.0.0.1:8000/api/plantas/";
 
+
+// Pegar Plantas
   Future<List<Planta>> getPlantas() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("accessToken");
@@ -25,6 +27,8 @@ final String baseUrl = "http://127.0.0.1:8000/api/plantas/";
     }
   }
 
+
+// Criar Planta
   Future<void> criarPlanta(String nome) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("accessToken");

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:grene/models/planta.dart';
 import 'package:grene/services/planta_service.dart';
 
+// Página para exibir plantas
+
 class PlantasPage extends StatefulWidget {
   const PlantasPage({super.key});
 

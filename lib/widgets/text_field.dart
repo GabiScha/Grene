@@ -18,15 +18,20 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      cursorColor: Colors.white,
       decoration: InputDecoration(
+        focusColor: Colors.white,
+        hoverColor: Colors.white,
         labelText: label,
         filled: true,
-        fillColor: AppColors.primary.withOpacity(0.2),
+        fillColor: AppColors.primary.withValues(),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
+        labelStyle: TextStyle(color: Colors.blueGrey)
       ),
+      style: TextStyle(color: Colors.white),
     );
   }
 }

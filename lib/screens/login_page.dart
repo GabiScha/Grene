@@ -93,7 +93,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               const SizedBox(height: 40),
-              const Icon(Icons.eco, size: 48, color: AppColors.accent),
             ],
           ),
         ),
@@ -101,3 +100,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

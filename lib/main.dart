@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/login_page.dart';
-import 'screens/plantas_page.dart';
+import 'screens/plants_page.dart';
+import 'screens/home_page.dart';
 
 void main() {
   runApp(const GreneApp());
@@ -32,12 +33,13 @@ class GreneApp extends StatelessWidget {
               body: Center(child: CircularProgressIndicator()),
             );
           }
-          return snapshot.data! ? const PlantasPage() : LoginPage();
+          return snapshot.data! ? const HomePage() : HomePage();
         },
       ),
       routes: {
         "/login": (context) => LoginPage(),
-        "/home": (context) => const PlantasPage(),
+        "/plants": (context) => PlantsPage(),
+        "/home": (context) => const HomePage(),
       },
     );
   }

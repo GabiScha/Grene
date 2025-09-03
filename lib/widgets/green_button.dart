@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -23,7 +24,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: GoogleFonts.quicksand(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );

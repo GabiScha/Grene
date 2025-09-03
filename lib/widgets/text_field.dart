@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -29,9 +30,9 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
-        labelStyle: TextStyle(color: Colors.blueGrey)
+        labelStyle: GoogleFonts.quicksand(color: Colors.blueGrey)
       ),
-      style: TextStyle(color: Colors.white),
+      style: GoogleFonts.quicksand(color: Colors.white),
     );
   }
 }

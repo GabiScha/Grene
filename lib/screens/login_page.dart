@@ -3,6 +3,7 @@ import 'package:grene/services/api_service.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:grene/widgets/green_button.dart';
 import 'package:grene/widgets/text_field.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 //Página de Login
 
@@ -45,9 +46,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "Login",
-                style: TextStyle(
+                style: GoogleFonts.quicksand(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: AppColors.accent,
@@ -76,23 +77,24 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {},
-                child: const Text(
+                child: Text(
                   "Esqueceu a senha?",
-                  style: TextStyle(color: AppColors.text),
+                  style: GoogleFonts.quicksand(color: AppColors.text),
                 ),
               ),
               const SizedBox(height: 20),
 
-              const Text("Não tem os nossos produtos?"),
+              Text("Não tem os nossos produtos?", style: GoogleFonts.quicksand(),),
               TextButton(
                 onPressed: () {},
-                child: const Text(
+                child: Text(
                   "Compre aqui!",
-                  style: TextStyle(color: AppColors.accent),
+                  style: GoogleFonts.quicksand(color: AppColors.accent),
                 ),
               ),
 
               const SizedBox(height: 40),
+
             ],
           ),
         ),
@@ -100,4 +102,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

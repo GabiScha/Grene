@@ -16,6 +16,7 @@ class PlantsPage extends StatefulWidget {
 class _PlantsPageState extends State<PlantsPage> {
   final PlantaService service = PlantaService();
   late Future<List<Planta>> futurasPlantas;
+  Planta? plantaSelecionada;
 
   @override
   void initState() {
@@ -24,117 +25,119 @@ class _PlantsPageState extends State<PlantsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
+Widget build(BuildContext context) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      if (constraints.maxWidth > 800) {
+        // PC
+        return FutureBuilder<List<Planta>>(
+          future: futurasPlantas,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Erro: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("Nenhuma planta cadastrada"));
+            }
 
+            final plantas = snapshot.data!;
+            plantaSelecionada ??= plantas[0];
 
-
-        //PC
-
-
-
-        if (constraints.maxWidth > 800) {
-          return Scaffold(
-      backgroundColor: AppColors.background,
-      body: FutureBuilder<List<Planta>>(
-        future: futurasPlantas,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Erro: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Nenhuma planta cadastrada"));
-          }
-
-          final plantas = snapshot.data!;
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: plantas.length,
-            itemBuilder: (context, index) {
-              final planta = plantas[index];
-
-              return Column(
-                children: [
-                  HomePlantWidget(
-                    name: planta.nome,
-                    plant: "Samambaia",
-                    img: "",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlantDetailPage(planta: planta),
+            return Row(
+              children: [
+                // Esquerda: grid de plantas (2/3 da tela)
+                Expanded(
+                  flex: 2, // <-- 2/3
+                  child: GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 250, // largura máxima de cada card
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.9, // ajusta proporção altura/largura
+                      ),
+                    itemCount: plantas.length,
+                    itemBuilder: (context, index) {
+                      final planta = plantas[index];
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            plantaSelecionada = planta;
+                          });
+                        },
+                        child: HomePlantWidget(
+                          name: planta.nome,
+                          plant: "Samambaia",
+                          img: "",
+                          onPressed: () {
+                            setState(() {
+                              plantaSelecionada = planta;
+                            });
+                          },
                         ),
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
-                ],
-              );
-            },
-          );
-        },
-      ),
-    );
+                ),
 
-
-
-
-  }else {
-
-
-    //Mobile
-
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: FutureBuilder<List<Planta>>(
-        future: futurasPlantas,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Erro: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Nenhuma planta cadastrada"));
-          }
-
-          final plantas = snapshot.data!;
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: plantas.length,
-            itemBuilder: (context, index) {
-              final planta = plantas[index];
-
-              return Column(
-                children: [
-                  HomePlantWidget(
-                    name: planta.nome,
-                    plant: "Samambaia",
-                    img: "",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlantDetailPage(planta: planta),
-                        ),
-                      );
-                    },
+                // Direita: detalhes da planta (1/3 da tela)
+                Expanded(
+                  flex: 1, // <-- 1/3
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0), // padding ao redor dos detalhes
+                    child: plantaSelecionada == null
+                        ? const Center(child: Text("Selecione uma planta"))
+                        : PlantDetailPage(planta: plantaSelecionada!),
                   ),
-                  const SizedBox(height: 10),
-                ],
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-  }
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Mobile
+        return FutureBuilder<List<Planta>>(
+          future: futurasPlantas,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Erro: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("Nenhuma planta cadastrada"));
+            }
+
+            final plantas = snapshot.data!;
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: plantas.length,
+              itemBuilder: (context, index) {
+                final planta = plantas[index];
+                return Column(
+                  children: [
+                    HomePlantWidget(
+                      name: planta.nome,
+                      plant: "Samambaia",
+                      img: "",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlantDetailPage(planta: planta),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      }
+    },
   );
 }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grene/models/planta.dart';
+import 'package:grene/screens/config_page.dart';
 import 'package:grene/screens/login_page.dart';
 import 'package:grene/screens/plants_page.dart';
 import 'package:grene/services/planta_service.dart';
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     LoginPage(), //  0
     PlantsPage(), //  1 
-    PlantsPage(), //  2
+    ConfigPage(), //  2
   ];
 
   void _onItemTapped(int index) {
@@ -45,35 +46,62 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex],
-
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.primary,
-        type: BottomNavigationBarType.fixed, // Importante para mais de 3 itens sem shifting
-        showSelectedLabels: false, // Oculta labels dos itens selecionados
-        showUnselectedLabels: false, // Oculta labels dos itens não selecionados
-        iconSize: 30, // Ajuste o tamanho dos ícones conforme necessário
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '', // Já está correto
+Widget build(BuildContext context) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      if (constraints.maxWidth > 800) {
+        // PC -> AppBar em cima
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          appBar: AppBar(
+            backgroundColor: AppColors.primary,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () => _onItemTapped(0),
+                  child: const Text("Conta", style: TextStyle(color: Colors.white)),
+                ),
+                const SizedBox(width: 40),
+                TextButton(
+                  onPressed: () => _onItemTapped(1),
+                  child: const Text("Plantas", style: TextStyle(color: Colors.white)),
+                ),
+                const SizedBox(width: 40),
+                TextButton(
+                  onPressed: () => _onItemTapped(2),
+                  child: const Text("Opções", style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+            centerTitle: true,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.nature),
-            label: '',
+          body: _pages[_selectedIndex],
+        );
+      } else {
+        // Mobile -> BottomNavigation
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: AppColors.primary,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            iconSize: 30,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.nature), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: AppColors.background,
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: AppColors.background, // Cor para ícones não selecionados
-        onTap: _onItemTapped,
-      ),
-    );
-  }
+        );
+      }
+    },
+  );
+}
 }

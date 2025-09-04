@@ -3,6 +3,7 @@ import 'package:grene/models/planta.dart';
 import 'package:grene/services/planta_service.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:grene/widgets/plant_widget.dart';
+import 'package:grene/screens/plant_detail_page.dart';
 
 // Página para exibir plantas
 class PlantsPage extends StatefulWidget {
@@ -52,7 +53,12 @@ class _PlantsPageState extends State<PlantsPage> {
                     plant: "Samambaia",
                     img: "",
                     onPressed: () {
-                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlantDetailPage(planta: planta),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 10),

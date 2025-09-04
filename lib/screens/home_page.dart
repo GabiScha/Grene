@@ -4,7 +4,6 @@ import 'package:grene/screens/login_page.dart';
 import 'package:grene/screens/plants_page.dart';
 import 'package:grene/services/planta_service.dart';
 import 'package:grene/theme/colors/app_colors.dart';
-import 'package:grene/widgets/plant_widget.dart';
 
 // Página para exibir plantas
 
@@ -35,14 +34,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final planta1 = HomePlantWidget(
-    name: "Verdinha",
-    plant: "Samambaia",
-    img: "",
-    onPressed: () {
-    },
-    );
-
 
 
   @override
@@ -55,6 +46,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.primary,
         type: BottomNavigationBarType.fixed, // Importante para mais de 3 itens sem shifting

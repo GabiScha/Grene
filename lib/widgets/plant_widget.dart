@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grene/theme/colors/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePlantWidget extends StatelessWidget {
   final String name;
@@ -22,13 +24,13 @@ class HomePlantWidget extends StatelessWidget {
         height: 200,
         width: 320,
         decoration: BoxDecoration(
-          color: Colors.green,
+          color: AppColors.back_green,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.lightGreen,
+            color: AppColors.back_ligth_green,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -51,16 +53,13 @@ class HomePlantWidget extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                        style: GoogleFonts.quicksand(fontSize: 18, fontWeight: FontWeight.bold,),
                         ),
-                        overflow: TextOverflow.ellipsis, // Evita overflow de texto
-                      ),
+                      
                       const SizedBox(height: 8),
                       Text(
                         plant,
-                        style: const TextStyle(fontSize: 14),
+                        style: GoogleFonts.quicksand(fontSize: 14),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

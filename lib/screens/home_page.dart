@@ -5,7 +5,9 @@ import 'package:grene/screens/plants_page.dart';
 import 'package:grene/services/planta_service.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 
-// Página para exibir plantas
+// Página para exibir a pagina atual, e a appbar
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

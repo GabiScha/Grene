@@ -39,7 +39,17 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+
+
+
+        //PC
+
+
+
+        if (constraints.maxWidth > 800) {
+          return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
         child: Padding(
@@ -101,5 +111,85 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+    }
+
+
+
+
+
+
+    else {
+
+
+
+      //MOBILE
+
+
+
+      return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Login",
+                style: GoogleFonts.quicksand(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.accent,
+                ),
+              ),
+              const SizedBox(height: 40),
+
+              CustomTextField(
+                label: "Email",
+                controller: _userController,
+              ),
+              const SizedBox(height: 16),
+
+              CustomTextField(
+                label: "Senha",
+                controller: _passController,
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+
+              CustomButton(
+                text: "Entrar",
+                onPressed: _login,
+              ),
+
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Esqueceu a senha?",
+                  style: GoogleFonts.quicksand(color: AppColors.text),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              Text("Não tem os nossos produtos?", style: GoogleFonts.quicksand(),),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Compre aqui!",
+                  style: GoogleFonts.quicksand(color: AppColors.accent),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+            ],
+          ),
+        ),
+      ),
+    );
+    }
   }
+  );
+ }
 }

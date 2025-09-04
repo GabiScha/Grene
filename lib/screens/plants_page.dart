@@ -25,6 +25,70 @@ class _PlantsPageState extends State<PlantsPage> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+
+
+
+        //PC
+
+
+
+        if (constraints.maxWidth > 800) {
+          return Scaffold(
+      backgroundColor: AppColors.background,
+      body: FutureBuilder<List<Planta>>(
+        future: futurasPlantas,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Erro: ${snapshot.error}"));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("Nenhuma planta cadastrada"));
+          }
+
+          final plantas = snapshot.data!;
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: plantas.length,
+            itemBuilder: (context, index) {
+              final planta = plantas[index];
+
+              return Column(
+                children: [
+                  HomePlantWidget(
+                    name: planta.nome,
+                    plant: "Samambaia",
+                    img: "",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlantDetailPage(planta: planta),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
+
+
+
+
+  }else {
+
+
+    //Mobile
+
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: FutureBuilder<List<Planta>>(
@@ -70,4 +134,7 @@ class _PlantsPageState extends State<PlantsPage> {
       ),
     );
   }
+  }
+  );
+}
 }

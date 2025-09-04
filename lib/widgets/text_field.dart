@@ -22,7 +22,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Colors.white,
       decoration: InputDecoration(
         focusColor: Colors.white,
-        hoverColor: Colors.white,
+        hoverColor: AppColors.back_ligth_green,
         labelText: label,
         filled: true,
         fillColor: AppColors.primary.withValues(),

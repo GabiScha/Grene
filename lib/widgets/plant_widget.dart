@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+
 class HomePlantWidget extends StatelessWidget {
   final String name;
   final String plant;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grene/models/planta.dart';
 import 'package:grene/services/planta_service.dart';
-import 'package:grene/theme/colors/app_colors.dart';
 import 'package:grene/widgets/plant_widget.dart';
 import 'package:grene/screens/plant_detail_page.dart';
 

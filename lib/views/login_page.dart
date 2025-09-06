@@ -79,11 +79,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      color: Colors.black,
+                    child: Align(
+                      alignment: Alignment.bottomCenter, // encosta no chão
                       child: Image.asset(
-                        "assets/imagem.png",
-                        fit: BoxFit.cover,
+                        "lib/assets/img/potplant-nobackground-removebg-preview.png",
+                        fit: BoxFit.contain,
+                        height: 700, // ajusta o tamanho da planta
                       ),
                     ),
                   ),

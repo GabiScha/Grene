@@ -19,7 +19,7 @@ class Planta {
       id: json['id'] ?? 0,                 
       nome: json['name'] ?? "Sem nome",    
       tipo: json['plant_name'] ?? "Desconhecida", 
-      estado: recs.isEmpty ? "Feliz" : "Triste", // agora pega do backend
+      estado: recs.isEmpty ? "Feliz" : "Triste",
     );
   }
 }

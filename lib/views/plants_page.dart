@@ -59,7 +59,7 @@ class _PlantsPageState extends State<PlantsPage> {
                         final planta = plantas[index];
                         return HomePlantWidget(
                           name: planta.nome,
-                          plant: "Samambaia",
+                          plant: planta.tipo,
                           img: "",
                           onPressed: () {
                             setState(() {
@@ -102,7 +102,7 @@ class _PlantsPageState extends State<PlantsPage> {
                       children: [
                         HomePlantWidget(
                           name: planta.nome,
-                          plant: "Samambaia",
+                          plant: planta.tipo,
                           img: "",
                           onPressed: () {
                             Navigator.push(

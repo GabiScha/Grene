@@ -54,9 +54,15 @@ class HomePlantWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
-                        style: GoogleFonts.quicksand(fontSize: 18, fontWeight: FontWeight.bold,),
+                          name,
+                          maxLines: 3, 
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.quicksand(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+
                       
                       const SizedBox(height: 8),
                       Text(

@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/planta.dart';
 import 'api_service.dart';
 
 class PlantaService {
   final String baseUrl = "http://127.0.0.1:8000/api/vasos/"; // <- vasos do usuário
 
-  // Pega todos os vasos (Plantas animadas) do usuário
+  // Pega todos os vasos do usuário
   Future<List<Planta>> getPlantas() async {
     final token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
@@ -46,4 +45,5 @@ class PlantaService {
       throw Exception("Erro ao criar planta: ${response.body}");
     }
   }
+  
 }

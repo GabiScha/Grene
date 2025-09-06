@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/login_page.dart';
-import 'screens/plants_page.dart';
-import 'screens/home_page.dart';
+import 'views/login_page.dart';
+import 'views/plants_page.dart';
+import 'views/home_page.dart';
 
 void main() {
   runApp(const GreneApp());

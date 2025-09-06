@@ -1,45 +1,45 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:grene/models/planta.dart';
+import '../models/planta.dart';
+import 'api_service.dart';
 
 class PlantaService {
-final String baseUrl = "http://127.0.0.1:8000/api/plantas/";
+  final String baseUrl = "http://127.0.0.1:8000/api/vasos/"; // <- vasos do usuário
 
-
-// Pegar Plantas
+  // Pega todos os vasos (Plantas animadas) do usuário
   Future<List<Planta>> getPlantas() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("accessToken");
+    final token = await ApiService.getToken();
+    if (token == null) throw Exception("Usuário não autenticado");
 
     final response = await http.get(
       Uri.parse(baseUrl),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
+      headers: {"Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      return data.map((p) => Planta.fromJson(p)).toList();
+      return data.map((v) => Planta.fromJson(v)).toList();
     } else {
       throw Exception("Erro ao carregar plantas: ${response.body}");
     }
   }
 
-
-// Criar Planta
-  Future<void> criarPlanta(String nome) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("accessToken");
+  // Criar vaso/planta nova
+  Future<void> criarPlanta(String nome, int plantId) async {
+    final token = await ApiService.getToken();
+    if (token == null) throw Exception("Usuário não autenticado");
 
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $token"
       },
-      body: jsonEncode({"nome": nome}),
+      body: jsonEncode({
+        "nome": nome,
+        "plant": plantId // id da planta selecionada do catálogo
+      }),
     );
 
     if (response.statusCode != 201) {

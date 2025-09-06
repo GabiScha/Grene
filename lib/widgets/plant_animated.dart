@@ -218,7 +218,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
 
                   Positioned(
                     bottom: 120,
-                    right: 80,
+                    right: 82.5,
                     child: Container(
                       height: 30,
                       width: 32,
@@ -377,7 +377,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
 
 
 
-    } else if (widget.estado == "Triste"){
+    } else if (widget.estado == "Seca"){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -390,7 +390,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
               height: 320,
               width: 200,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: const Color.fromARGB(255, 187, 192, 120),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -668,7 +668,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
               height: 320,
               width: 200,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 161, 216, 90),
+                color: AppColors.primary,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),

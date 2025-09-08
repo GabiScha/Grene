@@ -377,7 +377,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
 
 
 
-    } else if (widget.estado == "Seca"){
+    } else if (widget.estado == "Triste: minha terrinha está seca, rega por favor"){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

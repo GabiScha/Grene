@@ -1,11 +1,9 @@
-# 「 Flutter 」- Grene
+<h1 align="center">「 Flutter 」- Grene</h1>
 
 
 
 
-
-
-## 📌 Objetivos
+<h2 id=objective>📌 Objetivos</h2>
 
 O objetivo do projeto é criar um aplicativo em Flutter que conecta usuários a vasos inteligentes, permitindo acompanhar o estado de suas plantas em tempo real com base em sensores e valores ideais de cultivo.
 
@@ -73,4 +71,5 @@ lib/
 
 - [GabiScha](https://www.linkedin.com/in/gabrielaschaper/)  
 - [Pedro](https://www.linkedin.com/)
+
 

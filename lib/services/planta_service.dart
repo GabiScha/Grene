@@ -1,23 +1,26 @@
+// services/planta_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/planta.dart';
 import 'api_service.dart';
 
+/// Serviço responsável por lidar com operações relacionadas às plantas e vasos.
+/// Faz requisições ao backend e monta objetos [Planta].
 class PlantaService {
   final String baseUrl = "http://127.0.0.1:8000/api";
 
-  /// Gera slug a partir do nome do vaso
+  /// Gera um slug a partir do nome do vaso, útil para buscar histórico de sensores.
   String gerarSlug(String nome) {
     return nome
         .toLowerCase()
-        .replaceAll(
-          RegExp(r'[^a-z0-9]+'),
-          '-',
-        ) // substitui espaços e caracteres especiais por '-'
-        .replaceAll(RegExp(r'^-+|-+$'), ''); // remove '-' no início/fim
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '-') // substitui caracteres especiais
+        .replaceAll(RegExp(r'^-+|-+$'), ''); // remove hífens no início/fim
   }
 
-  /// Pega todos os vasos do usuário com estado calculado
+  /// Busca todos os vasos do usuário, consulta catálogo de plantas
+  /// e calcula o estado de cada planta com base nos sensores.
+  ///
+  /// Retorna uma lista de [Planta].
   Future<List<Planta>> getPlantas() async {
     final token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
@@ -31,31 +34,27 @@ class PlantaService {
     if (vasosRes.statusCode != 200) {
       throw Exception("Erro ao carregar vasos: ${vasosRes.body}");
     }
-
     final List<dynamic> vasos = jsonDecode(vasosRes.body);
 
-    // 2. Buscar catálogo de plantas (valores ideais)
+    // 2. Buscar catálogo de plantas
     final plantasRes = await http.get(
       Uri.parse("$baseUrl/plantas/"),
       headers: {"Authorization": "Bearer $token"},
     );
 
     if (plantasRes.statusCode != 200) {
-      throw Exception(
-        "Erro ao carregar catálogo de plantas: ${plantasRes.body}",
-      );
+      throw Exception("Erro ao carregar catálogo de plantas: ${plantasRes.body}");
     }
-
     final List<dynamic> plantasCatalogo = jsonDecode(plantasRes.body);
 
-    // 3. Montar lista de Planta (do app)
+    // 3. Montar lista final
     List<Planta> lista = [];
     for (var vaso in vasos) {
       final slug = gerarSlug(vaso["pot_name"] ?? vaso["name"] ?? "");
       final plantId = vaso["plant"];
       final plantName = vaso["plant_name"] ?? "Desconhecida";
 
-      // fallback de valores ideais caso não exista a planta no catálogo
+      // Fallback caso a planta não esteja no catálogo
       final especie = plantasCatalogo.firstWhere(
         (p) => p["id"] == plantId,
         orElse: () => {
@@ -70,7 +69,7 @@ class PlantaService {
         },
       );
 
-      // buscar último sensor do vaso usando o slug
+      // Buscar último sensor do vaso
       final sensorRes = await http.get(
         Uri.parse("$baseUrl/vasos/$slug/historico-sensores/"),
         headers: {"Authorization": "Bearer $token"},
@@ -80,8 +79,7 @@ class PlantaService {
       if (sensorRes.statusCode == 200) {
         final List<dynamic> sensores = jsonDecode(sensorRes.body);
         if (sensores.isNotEmpty) {
-          final readings =
-              sensores.last["readings_json"] as Map<String, dynamic>;
+          final readings = sensores.last["readings_json"] as Map<String, dynamic>;
           estado = _calcularEstado(readings, especie);
         } else {
           estado = "Sensores está vazio";
@@ -103,7 +101,7 @@ class PlantaService {
     return lista;
   }
 
-  /// Criar vaso/planta nova
+  /// Cria um novo vaso/planta no backend.
   Future<void> criarPlanta(String nome, int plantId) async {
     final token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
@@ -122,7 +120,7 @@ class PlantaService {
     }
   }
 
-  /// Função que compara sensores com ideais
+  /// Calcula o estado da planta comparando leituras dos sensores com valores ideais.
   String _calcularEstado(
     Map<String, dynamic> readings,
     Map<String, dynamic> ideais,
@@ -135,36 +133,25 @@ class PlantaService {
     final light = readings["light"];
 
     if (temp != null) {
-      if (temp < ideais["ideal_temperature_min"])
-        motivos.add("estou com frio, preciso de mais calor");
-      if (temp > ideais["ideal_temperature_max"])
-        motivos.add("estou com calor demais");
+      if (temp < ideais["ideal_temperature_min"]) motivos.add("estou com frio, preciso de mais calor");
+      if (temp > ideais["ideal_temperature_max"]) motivos.add("estou com calor demais");
     }
 
     if (hum != null) {
-      if (hum < ideais["ideal_humidity_min"])
-        motivos.add("estou seco, me dê água");
-      if (hum > ideais["ideal_humidity_max"])
-        motivos.add("agua demais, estou encharcada");
+      if (hum < ideais["ideal_humidity_min"]) motivos.add("estou seco, me dê água");
+      if (hum > ideais["ideal_humidity_max"]) motivos.add("água demais, estou encharcada");
     }
 
     if (soil != null) {
-      if (soil < ideais["ideal_soil_moisture_min"])
-        motivos.add("minha terrinha está seca, rega por favor");
-      if (soil > ideais["ideal_soil_moisture_max"])
-        motivos.add("minha terrinha está molhada demais");
+      if (soil < ideais["ideal_soil_moisture_min"]) motivos.add("minha terrinha está seca, rega por favor");
+      if (soil > ideais["ideal_soil_moisture_max"]) motivos.add("minha terrinha está molhada demais");
     }
 
     if (light != null) {
       if (light < ideais["ideal_light_min"]) motivos.add("preciso de mais sol");
-      if (light > ideais["ideal_light_max"])
-        motivos.add("sol demais, me proteja");
+      if (light > ideais["ideal_light_max"]) motivos.add("sol demais, me proteja");
     }
 
-    if (motivos.isEmpty) {
-      return "Feliz";
-    } else {
-      return "Triste: ${motivos.join(', ')}";
-    }
+    return motivos.isEmpty ? "Feliz" : "Triste: ${motivos.join(', ')}";
   }
 }

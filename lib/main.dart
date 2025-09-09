@@ -33,7 +33,7 @@ class GreneApp extends StatelessWidget {
               body: Center(child: CircularProgressIndicator()),
             );
           }
-          return snapshot.data! ? const HomePage() : HomePage();
+          return snapshot.data! ? const LoginPage() : LoginPage();
         },
       ),
       routes: {

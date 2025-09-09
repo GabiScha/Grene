@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grene/views/config_page.dart';
-import 'package:grene/views/login_page.dart';
 import 'package:grene/views/plants_page.dart';
 import 'package:grene/theme/colors/app_colors.dart';
+import 'package:grene/views/user_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
-  final List<Widget> _pages = [LoginPage(), PlantsPage(), ConfigPage()];
+  final List<Widget> _pages = [UserPage(), PlantsPage(), ConfigPage()];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

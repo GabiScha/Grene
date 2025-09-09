@@ -42,17 +42,18 @@ Ferramentas utilizadas no desenvolvimento do projeto:
    flutter run
 
 <h2 id=structure>📂 Estrutura do Projeto</h2>
-  lib/
-  ├── controllers/      # Controladores (AuthController, PlantaController)
-  ├── models/           # Modelos (Planta)
-  ├── services/         # Serviços de API (ApiService, PlantaService)
-  ├── theme/            # Estilos globais (AppColors)
-  ├── views/            # Telas principais (Login, Home, Plants, User, Config)
-  ├── widgets/          # Widgets reutilizáveis (botões, campos, plantas animadas)
-  └── main.dart         # Arquivo principal
+lib/
+├── controllers/      # Controladores (AuthController, PlantaController)
+├── models/           # Modelos (Planta)
+├── services/         # Serviços de API (ApiService, PlantaService)
+├── theme/            # Estilos globais (AppColors)
+├── views/            # Telas principais (Login, Home, Plants, User, Config)
+├── widgets/          # Widgets reutilizáveis (botões, campos, plantas animadas)
+└── main.dart         # Arquivo principal
 
 <h2 id=author>🏷️ Autores </h2>
 
 . <a href="https://www.linkedin.com/in/gabrielaschaper/" target="_blank">GabiScha</a>
 . <a href="https://www.linkedin.com/" target="_blank">Pedro</a>
+
 

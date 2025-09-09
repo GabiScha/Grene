@@ -42,6 +42,8 @@ Ferramentas utilizadas no desenvolvimento do projeto:
    flutter run
 
 <h2 id=structure>📂 Estrutura do Projeto</h2>
+
+```plaintext
 lib/
 ├── controllers/      # Controladores (AuthController, PlantaController)
 ├── models/           # Modelos (Planta)
@@ -55,5 +57,6 @@ lib/
 
 . <a href="https://www.linkedin.com/in/gabrielaschaper/" target="_blank">GabiScha</a>
 . <a href="https://www.linkedin.com/" target="_blank">Pedro</a>
+
 
 

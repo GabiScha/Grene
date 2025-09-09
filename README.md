@@ -1,10 +1,10 @@
-<h1 align="center">「 Flutter 」- Grene </h1>
+# 「 Flutter 」- Grene
 
-<h2 id=objective>📌 Objetivos</h2>
+## 📌 Objetivos
 
 O objetivo do projeto é criar um aplicativo em Flutter que conecta usuários a vasos inteligentes, permitindo acompanhar o estado de suas plantas em tempo real com base em sensores e valores ideais de cultivo.
 
-<h2 id=features>⚙️ Funcionalidades</h2>
+## ⚙️ Funcionalidades
 
 - Login de usuário com autenticação JWT.
 - Cadastro e gerenciamento de plantas/vasos.
@@ -12,36 +12,46 @@ O objetivo do projeto é criar um aplicativo em Flutter que conecta usuários a 
 - Monitoramento em tempo real do estado da planta (temperatura, umidade, luminosidade e solo).
 - Interface responsiva e intuitiva.
 
-<h2 id=technology>💻 Tecnologias</h2>
+## 💻 Tecnologias
 
 Ferramentas utilizadas no desenvolvimento do projeto:
 
-- Framework: <a href="https://flutter.dev/">Flutter</a>
-- Linguagem: <a href="https://dart.dev/">Dart</a>
-- Backend: <a href="https://www.djangoproject.com/">Django REST Framework</a>
-- Gerenciamento de estado: Controllers simples (MVC-like)
-- Dependências principais:
-  - <a href="https://pub.dev/packages/http">http</a> → requisições HTTP
-  - <a href="https://pub.dev/packages/shared_preferences">shared_preferences</a> → armazenamento local de tokens
+- **Framework:** [Flutter](https://flutter.dev/)
+- **Linguagem:** [Dart](https://dart.dev/)
+- **Backend:** [Django REST Framework](https://www.djangoproject.com/)
+- **Gerenciamento de estado:** Controllers simples (MVC-like)
+- **Dependências principais:**
+  - [http](https://pub.dev/packages/http) → requisições HTTP  
+  - [shared_preferences](https://pub.dev/packages/shared_preferences) → armazenamento local de tokens  
 
-<h2 id=installation>📋 Instalação</h2>
+## 📋 Instalação
 
 1. Clone o repositório:
+   ```bash
    git clone https://github.com/GabiScha/Grene
+   ```
 
 2. Acesse a pasta do projeto:
+   ```bash
    cd grene
+   ```
 
 3. Instale as dependências:
+   ```bash
    flutter pub get
+   ```
 
 4. Execute o backend (Django) na porta 8000:
+   ```bash
    python manage.py runserver
+   ```
 
 5. Rode o aplicativo Flutter:
+   ```bash
    flutter run
+   ```
 
-<h2 id=structure>📂 Estrutura do Projeto</h2>
+## 📂 Estrutura do Projeto
 
 ```plaintext
 lib/
@@ -52,11 +62,9 @@ lib/
 ├── views/            # Telas principais (Login, Home, Plants, User, Config)
 ├── widgets/          # Widgets reutilizáveis (botões, campos, plantas animadas)
 └── main.dart         # Arquivo principal
+```
 
-<h2 id=author>🏷️ Autores </h2>
+## 🏷️ Autores
 
-. <a href="https://www.linkedin.com/in/gabrielaschaper/" target="_blank">GabiScha</a>
-. <a href="https://www.linkedin.com/" target="_blank">Pedro</a>
-
-
-
+- [GabiScha](https://www.linkedin.com/in/gabrielaschaper/)  
+- [Pedro](https://www.linkedin.com/)

@@ -27,7 +27,7 @@ Ferramentas utilizadas no desenvolvimento do projeto:
 <h2 id=installation>📋 Instalação</h2>
 
 1. Clone o repositório:
-   git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+   git clone https://github.com/GabiScha/Grene
 
 2. Acesse a pasta do projeto:
    cd grene
@@ -55,3 +55,4 @@ Ferramentas utilizadas no desenvolvimento do projeto:
 
 . <a href="https://www.linkedin.com/in/gabrielaschaper/" target="_blank">GabiScha</a>
 . <a href="https://www.linkedin.com/" target="_blank">Pedro</a>
+

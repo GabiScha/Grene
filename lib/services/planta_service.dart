@@ -17,44 +17,85 @@ class PlantaService {
         .replaceAll(RegExp(r'^-+|-+$'), ''); // remove hífens no início/fim
   }
 
-  /// Busca todos os vasos do usuário, consulta catálogo de plantas
-  /// e calcula o estado de cada planta com base nos sensores.
-  ///
-  /// Retorna uma lista de [Planta].
-  Future<List<Planta>> getPlantas() async {
-    final token = await ApiService.getToken();
+  /// Função helper que faz requisição GET com refresh automático
+  Future<http.Response> _get(String url) async {
+    var token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
 
-    // 1. Buscar vasos do usuário
-    final vasosRes = await http.get(
-      Uri.parse("$baseUrl/vasos/"),
+    var res = await http.get(
+      Uri.parse(url),
       headers: {"Authorization": "Bearer $token"},
     );
 
-    if (vasosRes.statusCode != 200) {
-      throw Exception("Erro ao carregar vasos: ${vasosRes.body}");
+    if ([401, 403, 404].contains(res.statusCode)) {
+      final refreshed = await ApiService.refreshToken();
+      if (refreshed) {
+        token = await ApiService.getToken();
+        res = await http.get(
+          Uri.parse(url),
+          headers: {"Authorization": "Bearer $token"},
+        );
+      }
     }
+
+    return res;
+  }
+
+  /// Função helper que faz requisição POST com refresh automático
+  Future<http.Response> _post(String url, dynamic body) async {
+    var token = await ApiService.getToken();
+    if (token == null) throw Exception("Usuário não autenticado");
+
+    var res = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    if ([401, 403, 404].contains(res.statusCode)) {
+      final refreshed = await ApiService.refreshToken();
+      if (refreshed) {
+        token = await ApiService.getToken();
+        res = await http.post(
+          Uri.parse(url),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+          body: jsonEncode(body),
+        );
+      }
+    }
+
+    return res;
+  }
+
+  /// Busca todos os vasos do usuário, consulta catálogo de plantas
+  /// e calcula o estado de cada planta com base nos sensores.
+  Future<List<Planta>> getPlantas() async {
+    // 1. Buscar vasos
+    final vasosRes = await _get("$baseUrl/vasos/");
+    if (vasosRes.statusCode != 200) throw Exception("Erro ao carregar vasos");
+
     final List<dynamic> vasos = jsonDecode(vasosRes.body);
 
     // 2. Buscar catálogo de plantas
-    final plantasRes = await http.get(
-      Uri.parse("$baseUrl/plantas/"),
-      headers: {"Authorization": "Bearer $token"},
-    );
+    final plantasRes = await _get("$baseUrl/plantas/");
+    if (plantasRes.statusCode != 200) throw Exception("Erro ao carregar catálogo de plantas");
 
-    if (plantasRes.statusCode != 200) {
-      throw Exception("Erro ao carregar catálogo de plantas: ${plantasRes.body}");
-    }
     final List<dynamic> plantasCatalogo = jsonDecode(plantasRes.body);
 
     // 3. Montar lista final
     List<Planta> lista = [];
+
     for (var vaso in vasos) {
       final slug = gerarSlug(vaso["pot_name"] ?? vaso["name"] ?? "");
       final plantId = vaso["plant"];
       final plantName = vaso["plant_name"] ?? "Desconhecida";
 
-      // Fallback caso a planta não esteja no catálogo
       final especie = plantasCatalogo.firstWhere(
         (p) => p["id"] == plantId,
         orElse: () => {
@@ -70,10 +111,7 @@ class PlantaService {
       );
 
       // Buscar último sensor do vaso
-      final sensorRes = await http.get(
-        Uri.parse("$baseUrl/vasos/$slug/historico-sensores/"),
-        headers: {"Authorization": "Bearer $token"},
-      );
+      final sensorRes = await _get("$baseUrl/vasos/$slug/historico-sensores/");
 
       String estado = "Sem dados";
       if (sensorRes.statusCode == 200) {
@@ -82,20 +120,18 @@ class PlantaService {
           final readings = sensores.last["readings_json"] as Map<String, dynamic>;
           estado = _calcularEstado(readings, especie);
         } else {
-          estado = "Sensores está vazio";
+          estado = "Sensores vazios";
         }
       } else {
         estado = "Erro ao buscar sensores: ${sensorRes.statusCode}";
       }
 
-      lista.add(
-        Planta(
-          id: vaso["id"],
-          nome: vaso["name"] ?? "Sem nome",
-          tipo: plantName,
-          estado: estado,
-        ),
-      );
+      lista.add(Planta(
+        id: vaso["id"],
+        nome: vaso["name"] ?? "Sem nome",
+        tipo: plantName,
+        estado: estado,
+      ));
     }
 
     return lista;
@@ -103,28 +139,14 @@ class PlantaService {
 
   /// Cria um novo vaso/planta no backend.
   Future<void> criarPlanta(String nome, int plantId) async {
-    final token = await ApiService.getToken();
-    if (token == null) throw Exception("Usuário não autenticado");
-
-    final response = await http.post(
-      Uri.parse("$baseUrl/vasos/"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-      body: jsonEncode({"name": nome, "plant": plantId}),
-    );
-
+    final response = await _post("$baseUrl/vasos/", {"name": nome, "plant": plantId});
     if (response.statusCode != 201) {
       throw Exception("Erro ao criar planta: ${response.body}");
     }
   }
 
   /// Calcula o estado da planta comparando leituras dos sensores com valores ideais.
-  String _calcularEstado(
-    Map<String, dynamic> readings,
-    Map<String, dynamic> ideais,
-  ) {
+  String _calcularEstado(Map<String, dynamic> readings, Map<String, dynamic> ideais) {
     List<String> motivos = [];
 
     final temp = readings["temperature"];

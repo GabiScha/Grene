@@ -13,7 +13,7 @@ class GreneApp extends StatelessWidget {
 
   Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("accessToken");
+    final token = prefs.getString("access_token"); // Corrigido
     return token != null && token.isNotEmpty;
   }
 
@@ -33,11 +33,11 @@ class GreneApp extends StatelessWidget {
               body: Center(child: CircularProgressIndicator()),
             );
           }
-          return snapshot.data! ? const LoginPage() : LoginPage();
+          return snapshot.data! ? const HomePage() : const LoginPage();
         },
       ),
       routes: {
-        "/login": (context) => LoginPage(),
+        "/login": (context) => const LoginPage(),
         "/plants": (context) => PlantsPage(),
         "/home": (context) => const HomePage(),
       },

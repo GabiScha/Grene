@@ -7,7 +7,8 @@ import 'api_service.dart';
 /// Serviço responsável por lidar com operações relacionadas às plantas e vasos.
 /// Faz requisições ao backend e monta objetos [Planta].
 class PlantaService {
-  final String baseUrl = "http://127.0.0.1:8000/api";
+  final String baseUrl = "http://127.0.0.1:8000/api"; //Web
+//  final String baseUrl = "http://10.0.2.2:8000/api"; //Android
 
   /// Gera um slug a partir do nome do vaso, útil para buscar histórico de sensores.
   String gerarSlug(String nome) {

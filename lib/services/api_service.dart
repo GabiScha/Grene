@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'storage_service.dart';
 
 class ApiService {
-  static const String baseUrl = "http://127.0.0.1:8000/api";
+  static const String baseUrl = "http://127.0.0.1:8000/api"; //web
+//  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
+
 
   /// Realiza login do usuário e salva tokens localmente
   static Future<bool> login(String username, String password) async {

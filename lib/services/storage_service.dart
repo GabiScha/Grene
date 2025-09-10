@@ -1,4 +1,4 @@
-//sotorage_service.dart
+// storage_service.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -7,8 +7,8 @@ class StorageService {
 
   static const String _favoritesKey = "favorites";
   static const String _groupsKey = "groups"; 
-  // formato salvo: List<String> com nomes de grupos
-  // plantas de cada grupo ficam em "group_<nomeDoGrupo>"
+
+  static const String _themeKey = "is_dark_theme"; // 🔹 novo
 
   // ---------------------------
   // Tokens
@@ -33,6 +33,19 @@ class StorageService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_accessTokenKey);
     await prefs.remove(_refreshTokenKey);
+  }
+
+  // ---------------------------
+  // Tema
+  // ---------------------------
+  static Future<void> saveTheme(bool isDark) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_themeKey, isDark);
+  }
+
+  static Future<bool> getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_themeKey) ?? false; // false = claro padrão
   }
 
   // ---------------------------

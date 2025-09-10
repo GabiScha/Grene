@@ -3,8 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'views/login_page.dart';
 import 'views/plants_page.dart';
 import 'views/home_page.dart';
+import 'theme/colors/app_colors.dart';
+import 'services/storage_service.dart';
 
-void main() {
+void main() async{
+  bool isDark = await StorageService.getTheme();
+  AppColors.load(isDark);
   runApp(const GreneApp());
 }
 

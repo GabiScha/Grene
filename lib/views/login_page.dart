@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacementNamed(context, "/home");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("Usuário ou senha inválidos"),
           backgroundColor: AppColors.primary,
         ),

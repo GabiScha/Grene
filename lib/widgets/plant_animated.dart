@@ -349,7 +349,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
               height: 250,
               width: 310,
               decoration: BoxDecoration(
-                color: AppColors.pot_color,
+                color: AppColors.potColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -634,7 +634,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
               height: 250,
               width: 310,
               decoration: BoxDecoration(
-                color: AppColors.pot_color,
+                color: AppColors.potColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -912,7 +912,7 @@ class _PlantAnimatedState extends State<PlantAnimated> {
               height: 250,
               width: 310,
               decoration: BoxDecoration(
-                color: AppColors.pot_color,
+                color: AppColors.potColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),

@@ -26,13 +26,13 @@ class HomePlantWidget extends StatelessWidget {
         height: 200,
         width: 320,
         decoration: BoxDecoration(
-          color: AppColors.back_green,
+          color: AppColors.backGreen,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppColors.back_ligth_green,
+            color: AppColors.backLightGreen,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(

@@ -5,6 +5,8 @@
 /// - [nome]: nome atribuído pelo usuário ao vaso.
 /// - [tipo]: espécie da planta (vindo do catálogo).
 /// - [estado]: estado atual calculado a partir de sensores e valores ideais.
+
+
 class Planta {
   final int id;
   final String nome;
@@ -30,9 +32,8 @@ class Planta {
     );
   }
 
-  /// Converte o objeto [Planta] em um `Map<String, dynamic>`.
-  /// 
-  /// Útil para salvar localmente ou enviar para o backend.
+  /// Converte o objeto [Planta] em um map.
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -47,3 +48,4 @@ class Planta {
     return 'Planta(id: $id, nome: $nome, tipo: $tipo, estado: $estado)';
   }
 }
+

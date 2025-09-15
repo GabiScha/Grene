@@ -93,13 +93,14 @@ class ApiService {
     return response;
   }
 
-  /// GET usando a função genérica
+  // Get
   static Future<http.Response> get(String endpoint) async {
     return await request(Uri.parse("$baseUrl/$endpoint"));
   }
 
-  /// POST usando a função genérica
+  /// Post
   static Future<http.Response> post(String endpoint, dynamic body) async {
     return await request(Uri.parse("$baseUrl/$endpoint"), method: "POST", body: body);
   }
 }
+

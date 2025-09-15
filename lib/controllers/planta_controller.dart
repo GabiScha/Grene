@@ -13,7 +13,7 @@ class PlantaController {
     return await _service.getPlantas();
   }
 
-  /// Adiciona uma nova planta ao backend.
+  /// Adiciona uma nova planta.
   Future<void> adicionarPlanta(String nome, int plantId) async {
     await _service.criarPlanta(nome, plantId);
   }

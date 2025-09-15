@@ -17,7 +17,7 @@ class GreneApp extends StatelessWidget {
 
   Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("access_token"); // Corrigido
+    final token = prefs.getString("access_token");
     return token != null && token.isNotEmpty;
   }
 
@@ -48,3 +48,4 @@ class GreneApp extends StatelessWidget {
     );
   }
 }
+

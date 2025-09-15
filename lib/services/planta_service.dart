@@ -10,7 +10,7 @@ class PlantaService {
   final String baseUrl = "http://127.0.0.1:8000/api"; //Web
 //  final String baseUrl = "http://10.0.2.2:8000/api"; //Android
 
-  /// Gera um slug a partir do nome do vaso, útil para buscar histórico de sensores.
+  /// Gera um slug a partir do nome do vaso.
   String gerarSlug(String nome) {
     return nome
         .toLowerCase()
@@ -18,7 +18,7 @@ class PlantaService {
         .replaceAll(RegExp(r'^-+|-+$'), ''); // remove hífens no início/fim
   }
 
-  /// Função helper que faz requisição GET com refresh automático
+  /// Função que faz requisição GET com refresh automático
   Future<http.Response> _get(String url) async {
     var token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
@@ -42,7 +42,7 @@ class PlantaService {
     return res;
   }
 
-  /// Função helper que faz requisição POST com refresh automático
+  /// Função que faz requisição POST com refresh automático
   Future<http.Response> _post(String url, dynamic body) async {
     var token = await ApiService.getToken();
     if (token == null) throw Exception("Usuário não autenticado");
@@ -178,3 +178,4 @@ class PlantaService {
     return motivos.isEmpty ? "Feliz" : "Triste: ${motivos.join(', ')}";
   }
 }
+

@@ -6,7 +6,8 @@ import 'views/home_page.dart';
 import 'theme/colors/app_colors.dart';
 import 'services/storage_service.dart';
 
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // 🔹 obrigatório antes de usar SharedPreferences
   bool isDark = await StorageService.getTheme();
   AppColors.load(isDark);
   runApp(const GreneApp());
@@ -26,9 +27,7 @@ class GreneApp extends StatelessWidget {
     return MaterialApp(
       title: 'Grene App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
+      theme: ThemeData(primarySwatch: Colors.green),
       home: FutureBuilder<bool>(
         future: _isLoggedIn(),
         builder: (context, snapshot) {
@@ -42,10 +41,9 @@ class GreneApp extends StatelessWidget {
       ),
       routes: {
         "/login": (context) => const LoginPage(),
-        "/plants": (context) => PlantsPage(),
+        "/plants": (context) => const PlantsPage(),
         "/home": (context) => const HomePage(),
       },
     );
   }
 }
-

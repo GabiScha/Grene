@@ -9,6 +9,9 @@ class ExitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = screenWidth > 800 ? 22 : 18; 
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
@@ -19,7 +22,7 @@ class ExitButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          minimumSize: const Size(500, 60), 
+          minimumSize: const Size(450, 60),
           elevation: 0,
         ),
         child: Row(
@@ -29,13 +32,13 @@ class ExitButton extends StatelessWidget {
               text,
               style: GoogleFonts.quicksand(
                 fontWeight: FontWeight.w400,
-                fontSize: 22,
+                fontSize: fontSize,
                 color: const Color(0xFFF7F5DC),
               ),
             ),
             const Icon(
               Icons.chevron_right,
-              color: const Color(0xFFF7F5DC),
+              color: Color(0xFFF7F5DC),
               size: 24,
             ),
           ],

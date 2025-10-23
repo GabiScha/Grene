@@ -51,7 +51,7 @@ class _UserPageState extends State<UserPage> {
                     height: 500,
                     margin: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFCDE7D8),
+                      color: const Color(0xFFCCEBD0),
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),

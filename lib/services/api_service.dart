@@ -3,10 +3,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'storage_service.dart';
 
-class ApiService {
-  static const String baseUrl = "http://127.0.0.1:8000/api"; //web
-//  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
+// 🔹 Exceção customizada para token expirado
+class TokenExpiredException implements Exception {
+  final String message;
+  TokenExpiredException([this.message = "Token expirado"]);
 
+  @override
+  String toString() => message;
+}
+
+class ApiService {
+  // static const String baseUrl = "http://127.0.0.1:8000/api"; //web
+  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
 
   /// Realiza login do usuário e salva tokens localmente
   static Future<bool> login(String username, String password) async {
@@ -24,17 +32,14 @@ class ApiService {
     return false;
   }
 
-  /// Retorna o access token salvo
   static Future<String?> getToken() async {
     return await StorageService.getAccessToken();
   }
 
-  /// Retorna o refresh token salvo
   static Future<String?> getRefreshToken() async {
     return await StorageService.getRefreshToken();
   }
 
-  /// Tenta renovar o access token usando o refresh token
   static Future<bool> refreshToken() async {
     final refresh = await getRefreshToken();
     if (refresh == null) return false;
@@ -55,7 +60,7 @@ class ApiService {
     return false;
   }
 
-  /// Função genérica para requisições GET/POST com refresh automático
+  /// Função genérica para requisições com refresh automático
   static Future<http.Response> request(
     Uri uri, {
     String method = "GET",
@@ -65,42 +70,86 @@ class ApiService {
     String? token = await getToken();
 
     headers ??= {};
-    headers["Authorization"] = "Bearer $token";
+    if (token != null) headers["Authorization"] = "Bearer $token";
     if (body != null) headers["Content-Type"] = "application/json";
 
     http.Response response;
-    if (method == "GET") {
-      response = await http.get(uri, headers: headers);
-    } else {
-      response = await http.post(uri, headers: headers, body: jsonEncode(body));
+
+    switch (method.toUpperCase()) {
+      case "GET":
+        response = await http.get(uri, headers: headers);
+        break;
+      case "POST":
+        response = await http.post(uri, headers: headers, body: jsonEncode(body));
+        break;
+      case "PUT":
+        response = await http.put(uri, headers: headers, body: jsonEncode(body));
+        break;
+      case "PATCH":
+        response = await http.patch(uri, headers: headers, body: jsonEncode(body));
+        break;
+      case "DELETE":
+        response = await http.delete(uri, headers: headers);
+        break;
+      default:
+        response = await http.get(uri, headers: headers);
     }
 
-    // Se der 401/403/404, tenta refresh
-    if ([401, 403, 404].contains(response.statusCode)) {
+    // 🔹 Se token expirou (401) ou proibido (403)
+    if ([401, 403].contains(response.statusCode)) {
       final refreshed = await refreshToken();
       if (refreshed) {
         token = await getToken();
-        headers["Authorization"] = "Bearer $token";
-
-        if (method == "GET") {
-          response = await http.get(uri, headers: headers);
-        } else {
-          response = await http.post(uri, headers: headers, body: jsonEncode(body));
+        if (token != null) headers["Authorization"] = "Bearer $token";
+        print("TOKEN [$token]");
+        // refazer a requisição
+        switch (method.toUpperCase()) {
+          case "GET":
+            response = await http.get(uri, headers: headers);
+            break;
+          case "POST":
+            response = await http.post(uri, headers: headers, body: jsonEncode(body));
+            break;
+          case "PUT":
+            response = await http.put(uri, headers: headers, body: jsonEncode(body));
+            break;
+          case "PATCH":
+            response = await http.patch(uri, headers: headers, body: jsonEncode(body));
+            break;
+          case "DELETE":
+            response = await http.delete(uri, headers: headers);
+            break;
+          default:
+            response = await http.get(uri, headers: headers);
         }
+      } else {
+        // 🔹 Refresh falhou → limpar tokens e lançar exceção
+        await StorageService.clearTokens();
+        throw TokenExpiredException(); // lança exceção personalizada
       }
     }
 
     return response;
   }
 
-  // Get
+  // Helpers
   static Future<http.Response> get(String endpoint) async {
     return await request(Uri.parse("$baseUrl/$endpoint"));
   }
 
-  /// Post
   static Future<http.Response> post(String endpoint, dynamic body) async {
     return await request(Uri.parse("$baseUrl/$endpoint"), method: "POST", body: body);
   }
-}
 
+  static Future<http.Response> put(String endpoint, dynamic body) async {
+    return await request(Uri.parse("$baseUrl/$endpoint"), method: "PUT", body: body);
+  }
+
+  static Future<http.Response> patch(String endpoint, dynamic body) async {
+    return await request(Uri.parse("$baseUrl/$endpoint"), method: "PATCH", body: body);
+  }
+
+  static Future<http.Response> delete(String endpoint) async {
+    return await request(Uri.parse("$baseUrl/$endpoint"), method: "DELETE");
+  }
+}

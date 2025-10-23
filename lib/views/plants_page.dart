@@ -3,7 +3,10 @@ import '../models/planta.dart';
 import '../services/planta_service.dart';
 import '../widgets/plant_widget.dart';
 import 'plant_detail_page.dart';
-import '../widgets/group_dialog.dart'; // novo dialog de grupos
+import '../widgets/group_dialog.dart';
+import '../services/api_service.dart';
+import 'package:grene/theme/colors/app_colors.dart';
+
 
 class PlantsPage extends StatefulWidget {
   const PlantsPage({super.key});
@@ -36,6 +39,13 @@ class _PlantsPageState extends State<PlantsPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
+              // 🔹 Captura exceção de token expirado
+              if (snapshot.error is TokenExpiredException) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pushReplacementNamed("/login");
+                });
+                return const Center(child: CircularProgressIndicator());
+              }
               return Center(child: Text("Erro: ${snapshot.error}"));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text("Nenhuma planta cadastrada"));
@@ -78,7 +88,7 @@ class _PlantsPageState extends State<PlantsPage> {
                   child: plantaSelecionada == null
                       ? const Center(child: Text("Selecione uma planta"))
                       : PlantDetailPage(
-                          key: ValueKey(plantaSelecionada!.id), // 🔑 força rebuild
+                          key: ValueKey(plantaSelecionada!.id),
                           planta: plantaSelecionada!,
                         ),
                 ),
@@ -94,6 +104,13 @@ class _PlantsPageState extends State<PlantsPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
+              // 🔹 Captura exceção de token expirado
+              if (snapshot.error is TokenExpiredException) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pushReplacementNamed("/login");
+                });
+                return const Center(child: CircularProgressIndicator());
+              }
               return Center(child: Text("Erro: ${snapshot.error}"));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text("Nenhuma planta cadastrada"));
@@ -132,6 +149,7 @@ class _PlantsPageState extends State<PlantsPage> {
 
       return Scaffold(
         body: content,
+        backgroundColor:  AppColors.background,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -139,9 +157,12 @@ class _PlantsPageState extends State<PlantsPage> {
               builder: (_) => const GroupDialog(),
             );
           },
+          backgroundColor: AppColors.accent,
+          foregroundColor: AppColors.background,
           child: const Icon(Icons.group),
         ),
       );
+      
     });
   }
 }

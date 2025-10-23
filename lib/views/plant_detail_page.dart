@@ -1,10 +1,12 @@
-// plant_detail.page.dart
+// plant_detail_page.dart
 import 'package:flutter/material.dart';
 import 'package:grene/models/planta.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grene/widgets/plant_animated.dart';
-import 'package:grene/services/storage_service.dart';
+import 'package:grene/services/planta_service.dart';
+import 'package:grene/widgets/group_dialog.dart';
+
 
 class PlantDetailPage extends StatefulWidget {
   final Planta planta;
@@ -15,6 +17,8 @@ class PlantDetailPage extends StatefulWidget {
 }
 
 class _PlantDetailPageState extends State<PlantDetailPage> {
+  final PlantaService _service = PlantaService();
+
   bool _isFavorited = false;
 
   @override
@@ -24,28 +28,49 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
   }
 
   Future<void> _loadFavoriteStatus() async {
-    final fav = await StorageService.isFavorite(widget.planta.id.toString());
-    setState(() {
-      _isFavorited = fav;
-    });
+    try {
+      final favs = await _service.getFavoritePots(); // retorna lista de slugs/ids
+      final slug = widget.planta.slug ?? widget.planta.id.toString();
+      final fav = favs.any((f) => f == slug || f == widget.planta.id.toString());
+      if (!mounted) return;
+      setState(() {
+        _isFavorited = fav;
+      });
+    } catch (e) {
+      // se falhar, mantemos false e não quebramos a UI
+      if (!mounted) return;
+      setState(() => _isFavorited = false);
+    }
   }
 
   Future<void> _toggleFavorite() async {
-    await StorageService.toggleFavorite(widget.planta.id.toString());
-    final fav = await StorageService.isFavorite(widget.planta.id.toString());
-    setState(() {
-      _isFavorited = fav;
-    });
+    try {
+      final slug = widget.planta.slug ?? widget.planta.id.toString();
+      if (_isFavorited) {
+        await _service.unfavoritePot(slug);
+      } else {
+        await _service.favoritePot(slug);
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _isFavorited = !_isFavorited;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao alterar favorito: $e")),
+      );
+    }
   }
 
-  Future<void> _addToGroup() async {
-    // exemplo simples: adiciona sempre no grupo "Minhas Plantas"
-    await StorageService.addToGroup("Minhas Plantas", widget.planta.id.toString());
+Future<void> _addToGroup() async {
+  showDialog(
+    context: context,
+    builder: (context) => GroupDialog(potId: widget.planta.id),
+  );
+}
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("${widget.planta.nome} adicionada a Minhas Plantas")),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

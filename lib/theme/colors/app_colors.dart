@@ -17,7 +17,7 @@ class AppColors {
       text = const Color(0xFFEAEAEA);
       accent = const Color(0xFF81C784);
     } else {
-      background = const Color(0xFFF8F8E7);
+      background = const Color(0xFFF5F5DC);
       primary = const Color(0xFF6BCF9E);
       text = const Color(0xFF333333);
       accent = const Color(0xFF4CAF50);

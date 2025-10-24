@@ -51,11 +51,11 @@ class PlantaService {
     final List<dynamic> vasos = jsonDecode(vasosRes.body);
 
     // Buscar catálogo de plantas (public)
-    final plantasRes = await ApiService.get("plantas/");
-    List<dynamic> plantasCatalogo = [];
-    if (plantasRes.statusCode == 200) {
-      plantasCatalogo = jsonDecode(plantasRes.body);
-    }
+    // final plantasRes = await ApiService.get("plantas/");
+    // List<dynamic> plantasCatalogo = [];
+    // if (plantasRes.statusCode == 200) {
+    //   plantasCatalogo = jsonDecode(plantasRes.body);
+    // }
 
     List<Planta> lista = [];
 
@@ -65,15 +65,12 @@ class PlantaService {
       favs = await getFavoritePots();
     } catch (_) {}
 
-    for (var vaso in vasos) {
+        for (var vaso in vasos) {
       final slug = vaso["slug"] ?? vaso["pot_slug"] ?? gerarSlug(vaso["name"] ?? vaso["pot_name"] ?? "");
-      final plantId = vaso["plant"];
       final plantName = vaso["plant_name"] ?? vaso["plant_display"] ?? vaso["plant"]?.toString() ?? "Desconhecida";
 
-      // 🔹 BUSCAR ideais reais da planta
       final especie = await _buscarIdeaisPlanta(plantName);
 
-      // Buscar últimas leituras
       String estado = "Sem dados";
 
       final readingsRes = await ApiService.get("pots/$slug/last-reading/");
@@ -113,9 +110,15 @@ class PlantaService {
         favorito: favorito,
       ));
     }
-
+        lista.sort((a, b) {
+          final favA = a.favorito ?? false;
+          final favB = b.favorito ?? false;
+          if (favA == favB) return 0;
+          return favA ? -1 : 1;
+        });
     return lista;
   }
+
 
   /// Cria um novo vaso
   Future<void> criarPlanta(String nome, int plantId) async {

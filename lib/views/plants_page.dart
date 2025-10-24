@@ -143,6 +143,16 @@ class _PlantsPageState extends State<PlantsPage> {
           }
 
           final items = snapshot.data ?? [];
+          if (plantaSelecionada == null && items.isNotEmpty) {
+            final firstPlant = items.firstWhere(
+              (it) => it is Planta,
+              orElse: () => null,
+            );
+            if (firstPlant is Planta) {
+              plantaSelecionada = firstPlant;
+            }
+          }
+
 
           if (items.isEmpty) {
             return Scaffold(
@@ -202,7 +212,13 @@ class _PlantsPageState extends State<PlantsPage> {
                             showDialog(context: context, builder: (_) => const GroupDialog())
                                 .then((_) => _refreshAll());
                           },
+                          onPlantSelected: (planta) { // 👈 novo comportamento no desktop
+                            setState(() {
+                              plantaSelecionada = planta;
+                            });
+                          },
                         );
+
                       } else {
                         return const SizedBox.shrink();
                       }

@@ -13,8 +13,8 @@ class TokenExpiredException implements Exception {
 }
 
 class ApiService {
-  // static const String baseUrl = "http://127.0.0.1:8000/api"; //web
-  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
+  static const String baseUrl = "http://127.0.0.1:8000/api"; //web
+//  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
 
   /// Realiza login do usuário e salva tokens localmente
   static Future<bool> login(String username, String password) async {

@@ -3,14 +3,16 @@ class Planta {
   final String nome;
   final String tipo;
   final String estado;
-  final String? slug;     // ✅ novo campo opcional
-  final bool? favorito;   // ✅ novo campo opcional
+  final String? slug;
+  final bool? favorito;
+  final String img; // 🆕 Caminho da imagem
 
   Planta({
     required this.id,
     required this.nome,
     required this.tipo,
     required this.estado,
+    required this.img, // 🆕
     this.slug,
     this.favorito,
   });
@@ -21,8 +23,9 @@ class Planta {
       nome: json['name'] ?? "Sem nome",
       tipo: json['plant_name'] ?? "Desconhecida",
       estado: json['estado'] ?? "Sem dados",
-      slug: json['slug'],          // ✅ adicionado
-      favorito: json['favorito'],  // ✅ adicionado
+      img: json['img'] ?? "lib/assets/img/feliz.png", // 🆕 valor padrão
+      slug: json['slug'],
+      favorito: json['favorito'],
     );
   }
 
@@ -34,11 +37,12 @@ class Planta {
       'estado': estado,
       'slug': slug,
       'favorito': favorito,
+      'img': img,
     };
   }
 
   @override
   String toString() {
-    return 'Planta(id: $id, nome: $nome, tipo: $tipo, estado: $estado, slug: $slug, favorito: $favorito)';
+    return 'Planta(id: $id, nome: $nome, tipo: $tipo, estado: $estado, slug: $slug, favorito: $favorito, img: $img)';
   }
 }

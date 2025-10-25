@@ -27,11 +27,21 @@ class _GroupPlantItem extends StatelessWidget {
               color: AppColors.backGreen.withOpacity(0.7),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(
-              Icons.local_florist,
-              color: Colors.white70,
-              size: 28,
-            ),
+            child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: AppColors.backGreen.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Image.asset(
+                    planta.img, // 🆕 usa imagem vinda do model
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
           ),
           const SizedBox(height: 4),
           // Usamos Flexible e Text.rich para lidar com nomes muito longos 

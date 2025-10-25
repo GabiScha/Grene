@@ -130,7 +130,7 @@ class _PlantsPageState extends State<PlantsPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      final isWide = constraints.maxWidth > 950;
+      final isWide = constraints.maxWidth > 1270;
 
       return FutureBuilder<List<dynamic>>(
         future: futurasItens,
@@ -178,52 +178,52 @@ class _PlantsPageState extends State<PlantsPage> {
                 Expanded(
                   flex: 2,
                   child: GridView.builder(
-                    padding: const EdgeInsets.all(16),
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 250,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 0.9,
+                      padding: const EdgeInsets.all(16),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 0.9,
+                      ),
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        final it = items[index];
+                        if (it is Planta) {
+                          return HomePlantWidget(
+                            name: it.nome,
+                            plant: it.tipo,
+                            img: it.img,
+                            onPressed: () {
+                              setState(() {
+                                plantaSelecionada = it;
+                              });
+                            },
+                          );
+                        } else if (it is Map<String, dynamic>) {
+                          final g = it;
+                          final List<Planta> groupPlants =
+                              (g["plants"] as List<dynamic>? ?? []).whereType<Planta>().toList();
+
+                          return GroupWidget(
+                            name: g["name"] ?? "Grupo",
+                            description: g["description"] ?? "",
+                            plants: groupPlants,
+                            onPressed: () {
+                              showDialog(context: context, builder: (_) => const GroupDialog())
+                                  .then((_) => _refreshAll());
+                            },
+                            onPlantSelected: (planta) {
+                              setState(() {
+                                plantaSelecionada = planta;
+                              });
+                            },
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
                     ),
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final it = items[index];
-                      if (it is Planta) {
-                        return HomePlantWidget(
-                          name: it.nome,
-                          plant: it.tipo,
-                          img: "",
-                          onPressed: () {
-                            setState(() {
-                              plantaSelecionada = it;
-                            });
-                          },
-                        );
-                      } else if (it is Map<String, dynamic>) {
-                        final g = it;
-                        final List<Planta> groupPlants =
-                            (g["plants"] as List<dynamic>? ?? []).whereType<Planta>().toList();
 
-                        return GroupWidget(
-                          name: g["name"] ?? "Grupo",
-                          description: g["description"] ?? "",
-                          plants: groupPlants,
-                          onPressed: () {
-                            showDialog(context: context, builder: (_) => const GroupDialog())
-                                .then((_) => _refreshAll());
-                          },
-                          onPlantSelected: (planta) { // 👈 novo comportamento no desktop
-                            setState(() {
-                              plantaSelecionada = planta;
-                            });
-                          },
-                        );
-
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  ),
                 ),
                 Expanded(
                   flex: 1,
@@ -249,7 +249,7 @@ class _PlantsPageState extends State<PlantsPage> {
                       HomePlantWidget(
                         name: it.nome,
                         plant: it.tipo,
-                        img: "",
+                        img: it.img,
                         onPressed: () {
                           Navigator.push(
                             context,

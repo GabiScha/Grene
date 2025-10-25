@@ -101,6 +101,8 @@ class PlantaService {
 
       bool favorito = favs.any((f) => f == slug || f == vaso["id"].toString());
 
+    final imgPath = _getImageForEstado(estado);
+
       lista.add(Planta(
         id: vaso["id"],
         nome: vaso["name"] ?? vaso["pot_name"] ?? "Sem nome",
@@ -108,6 +110,7 @@ class PlantaService {
         estado: estado,
         slug: slug,
         favorito: favorito,
+        img: imgPath, 
       ));
     }
         lista.sort((a, b) {
@@ -183,6 +186,22 @@ class PlantaService {
     }
   }
 
+// ---------------------------
+// Lógica de imagem por estado
+// ---------------------------
+String _getImageForEstado(String estado) {
+  if (estado.toLowerCase().contains("feliz")) {
+    return "lib/assets/img/feliz.png";
+  } else if (estado.toLowerCase().contains("seca")) {
+    return "lib/assets/img/seca.png";
+  } else if (estado.toLowerCase().contains("triste")) {
+    return "lib/assets/img/triste.png";
+  } else {
+    return "lib/assets/img/triste.png";
+  }
+}
+
+
   // ---------------------------
   // Lógica de estado
   // ---------------------------
@@ -230,6 +249,13 @@ class PlantaService {
       if (lMax != null && light > lMax) motivos.add("sol demais, me proteja");
     }
 
+
     return motivos.isEmpty ? "Feliz" : "Triste: ${motivos.join(', ')}";
+
+    
   }
 }
+
+
+
+

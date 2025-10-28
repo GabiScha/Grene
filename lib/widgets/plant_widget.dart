@@ -1,8 +1,12 @@
+// Função: Exibe um card para uma única planta na tela principal de lista/grade.
+// Recebe:
+// - name: O nome dado ao vaso/planta.
+// - plant: O tipo/espécie da planta.
+// - img: O caminho do asset da imagem de estado da planta.
+// - onPressed: A função a ser chamada quando o card é pressionado.
 import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
 
 class HomePlantWidget extends StatelessWidget {
   final String name;
@@ -11,10 +15,10 @@ class HomePlantWidget extends StatelessWidget {
   final VoidCallback onPressed;
 
   const HomePlantWidget({
-    super.key, 
-    required this.name, 
+    super.key,
+    required this.name,
     required this.plant,
-    required this.img, 
+    required this.img,
     required this.onPressed
   });
 
@@ -37,16 +41,15 @@ class HomePlantWidget extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Imagem com tamanho ajustado
               Container(
-                width: 130, // Largura fixa para a imagem
+                width: 130,
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(
-                  img, 
-                  fit: BoxFit.cover, // Ajusta a imagem ao espaço disponível
-                ), 
-              ), 
-              Expanded( // Usa Expanded para ocupar o espaço restante
+                  img,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   child: Column(
@@ -55,7 +58,7 @@ class HomePlantWidget extends StatelessWidget {
                     children: [
                       Text(
                           name,
-                          maxLines: 3, 
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.quicksand(
                             fontSize: 18,
@@ -63,7 +66,7 @@ class HomePlantWidget extends StatelessWidget {
                           ),
                         ),
 
-                      
+
                       const SizedBox(height: 8),
                       Text(
                         plant,

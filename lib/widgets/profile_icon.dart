@@ -1,3 +1,5 @@
+// Função: Exibe o ícone de perfil do usuário (imagem de usuário em um container estilizado).
+// Recebe: Nada.
 import 'package:flutter/material.dart';
 
 class ProfileIcon extends StatelessWidget {
@@ -9,7 +11,7 @@ class ProfileIcon extends StatelessWidget {
       width: 140,
       height: 140,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 183, 208, 187), 
+        color: const Color.fromARGB(255, 183, 208, 187),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Stack(

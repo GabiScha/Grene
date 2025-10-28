@@ -1,3 +1,6 @@
+// Função: Um diálogo para gerenciar grupos de plantas (criar, listar, adicionar/remover plantas).
+// Recebe:
+// - potId: (Opcional) O ID da planta que está sendo adicionada/removida de um grupo.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grene/theme/colors/app_colors.dart';
@@ -123,11 +126,10 @@ class _GroupDialogState extends State<GroupDialog> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // 🔹 Header com título centralizado e botão fechar à direita
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(width: 48), // equilíbrio visual à esquerda
+                      const SizedBox(width: 48),
                       Expanded(
                         child: Center(
                           child: Row(

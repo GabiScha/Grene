@@ -1,3 +1,7 @@
+// Função: Um botão de propósito geral estilizado com a cor primária do tema.
+// Recebe:
+// - text: O rótulo exibido no botão.
+// - onPressed: A função a ser chamada quando o botão é pressionado.
 import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';

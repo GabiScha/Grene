@@ -1,8 +1,15 @@
-// services/api_service.dart
+//============================================================
+// ARQUIVO: services/api_service.dart
+//============================================================
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'storage_service.dart';
 
+//------------------------------------------------------------
+// <TokenExpiredException>
+// -- Propósito: Exceção customizada lançada quando o 'refresh token'
+//   falha ou expira, forçando o logout.
+//------------------------------------------------------------
 class TokenExpiredException implements Exception {
   final String message;
   TokenExpiredException([this.message = "Token expirado"]);
@@ -11,10 +18,25 @@ class TokenExpiredException implements Exception {
   String toString() => message;
 }
 
+//------------------------------------------------------------
+// <ApiService>
+// -- Propósito: Classe estática central para todas as comunicações
+//   com a API backend.
+// -- Features:
+//   -> Gerenciamento de tokens (login, refresh).
+//   -> Lógica de 'Retry' automático com 'refresh token'.
+//   -> Métodos helper (get, post, etc.)
+//------------------------------------------------------------
 class ApiService {
+  //-- URL Base da API --
   static const String baseUrl = "http://127.0.0.1:8000/api"; //web
-//  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
+//  static const String baseUrl = "http://10.0.2.2:8000/api"; //Android
 
+  //------------------------------------------------------------
+  // <login>
+  // -- Descrição: Autentica o usuário e salva os tokens (access, refresh).
+  // -- Retorno: <bool> -> true se sucesso.
+  //------------------------------------------------------------
   static Future<bool> login(String username, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/autenticar/"),
@@ -30,6 +52,10 @@ class ApiService {
     return false;
   }
 
+  //------------------------------------------------------------
+  // <getToken> / <getRefreshToken>
+  // -- Descrição: Helpers para buscar os tokens do <StorageService>.
+  //------------------------------------------------------------
   static Future<String?> getToken() async {
     return await StorageService.getAccessToken();
   }
@@ -38,6 +64,11 @@ class ApiService {
     return await StorageService.getRefreshToken();
   }
 
+  //------------------------------------------------------------
+  // <refreshToken>
+  // -- Descrição: Tenta obter um novo 'access token' usando o 'refresh token'.
+  // -- Retorno: <bool> -> true se a renovação foi bem-sucedida.
+  //------------------------------------------------------------
   static Future<bool> refreshToken() async {
     final refresh = await getRefreshToken();
     if (refresh == null) return false;
@@ -51,14 +82,22 @@ class ApiService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final newAccess = data["access"];
-      final newRefresh = data["refresh"] ?? refresh;
+      final newRefresh = data["refresh"] ?? refresh; // Reusa o refresh antigo se um novo não for enviado
       await StorageService.saveTokens(newAccess, newRefresh);
       return true;
     }
     return false;
   }
 
-  /// Função genérica para requisições com refresh automático
+  //------------------------------------------------------------
+  // <request> (Método Principal)
+  // -- Descrição: Função genérica para executar requisições (GET, POST, etc.).
+  // -- Lógica de Refresh:
+  //   1. Tenta a requisição com o token atual.
+  //   2. Se falhar (401/403), chama <refreshToken>.
+  //   3. Se <refreshToken> funcionar, repete a requisição original.
+  //   4. Se <refreshToken> falhar, lança <TokenExpiredException>.
+  //------------------------------------------------------------
   static Future<http.Response> request(
     Uri uri, {
     String method = "GET",
@@ -73,6 +112,7 @@ class ApiService {
 
     http.Response response;
 
+    //-- Executa a requisição HTTP --
     switch (method.toUpperCase()) {
       case "GET":
         response = await http.get(uri, headers: headers);
@@ -95,8 +135,10 @@ class ApiService {
 
     // 🔹 Se token expirou (401) ou proibido (403)
     if ([401, 403].contains(response.statusCode)) {
-      final refreshed = await refreshToken();
+      final refreshed = await refreshToken(); // Tenta renovar
+      
       if (refreshed) {
+        //-- SUCESSO NO REFRESH: Repete a requisição --
         token = await getToken();
         if (token != null) headers["Authorization"] = "Bearer $token";
         print("TOKEN [$token]");
@@ -130,7 +172,10 @@ class ApiService {
     return response;
   }
 
-  // Helpers
+  //------------------------------------------------------------
+  // <Helpers: get, post, put, patch, delete>
+  // -- Descrição: Atalhos para o método <request>.
+  //------------------------------------------------------------
   static Future<http.Response> get(String endpoint) async {
     return await request(Uri.parse("$baseUrl/$endpoint"));
   }

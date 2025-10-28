@@ -1,10 +1,20 @@
+// Função: Exibe um card representando um grupo de plantas, incluindo nome, descrição e uma lista/grade das plantas contidas.
+// Recebe:
+// - name: Nome do grupo.
+// - description: Descrição do grupo.
+// - plants: Lista de objetos Planta pertencentes ao grupo.
+// - onPressed: Função chamada ao pressionar o botão de gerenciar grupo.
+// - onPlantSelected: (Opcional) Função chamada ao selecionar uma planta dentro do grupo (usado no layout desktop).
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:grene/models/planta.dart';
 import 'package:grene/views/plant_detail_page.dart';
 
-// Widget auxiliar para as plantas dentro do grupo
+// Função: Widget auxiliar para exibir um item de planta individual dentro do GroupWidget.
+// Recebe:
+// - planta: O objeto Planta a ser exibido.
+// - onTap: (Opcional) Função chamada quando o item da planta é pressionado.
 class _GroupPlantItem extends StatelessWidget {
   final Planta planta;
   final void Function()? onTap;
@@ -18,7 +28,7 @@ class _GroupPlantItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Garante que a coluna ocupe o mínimo de espaço
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             height: 60,
@@ -37,18 +47,15 @@ class _GroupPlantItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Image.asset(
-                    planta.img, // 🆕 usa imagem vinda do model
+                    planta.img,
                     fit: BoxFit.contain,
                   ),
                 ),
-              ),
+            ),
           ),
           const SizedBox(height: 4),
-          // Usamos Flexible e Text.rich para lidar com nomes muito longos 
-          // sem quebrar o layout, mas preferimos maxLines e overflow: ellipsis
-          // para manter a consistência com o design original de 1 linha.
           SizedBox(
-            width: 80, // Largura fixa para o texto, igual à do _GroupPlantItem original
+            width: 80,
             child: Text(
               nome,
               maxLines: 1,
@@ -94,7 +101,6 @@ class GroupWidget extends StatelessWidget {
 
     return Container(
       width: containerWidth,
-      // Removido height fixo ou BoxConstraints. Adicionaremos rolagem interna.
       decoration: BoxDecoration(
         color: AppColors.backGreen,
         borderRadius: BorderRadius.circular(10),
@@ -113,14 +119,10 @@ class GroupWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(12),
-        // Usamos um Column e SingleChildScrollView aqui para garantir que 
-        // todo o conteúdo do card (cabeçalho, descrição, lista de plantas)
-        // possa rolar se o espaço for insuficiente, prevenindo overflows.
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Garante que a coluna não ocupe mais espaço que o necessário
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Cabeçalho com nome e botão do grupo
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -158,14 +160,10 @@ class GroupWidget extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // 🔹 Se houver plantas, mostramos a lista.
-            // O Flexible/Expanded aqui permite que a lista de plantas ocupe
-            // o espaço restante, e se precisar de mais, o SingleChildScrollView
-            // externo (do card todo) vai lidar com a rolagem.
             if (plants.isNotEmpty)
-              Flexible( // Usamos Flexible para que a lista de plantas possa encolher se necessário
-                child: SingleChildScrollView( // Rolagem interna para a lista de plantas
-                  child: isWide 
+              Flexible(
+                child: SingleChildScrollView(
+                  child: isWide
                       ? Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -188,8 +186,8 @@ class GroupWidget extends StatelessWidget {
                           }).toList(),
                         )
                       : GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(), // Desativa a rolagem do GridView
-                          shrinkWrap: true, // Faz o GridView ocupar o espaço mínimo necessário
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             crossAxisSpacing: 8,
@@ -214,7 +212,6 @@ class GroupWidget extends StatelessWidget {
                         ),
                 ),
               ),
-            // Se não houver plantas, talvez queiramos exibir uma mensagem ou um placeholder
             if (plants.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -234,4 +231,3 @@ class GroupWidget extends StatelessWidget {
     );
   }
 }
-

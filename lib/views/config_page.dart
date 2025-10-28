@@ -1,8 +1,16 @@
+//============================================================
+// ARQUIVO: views/config_page.dart
+//============================================================
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/config_button.dart';
 import '../widgets/config_icon.dart';
 
+//------------------------------------------------------------
+// <ConfigPage> (View)
+// -- Propósito: Tela de configurações do aplicativo.
+// -- Layout: Responsivo (Mobile/Desktop).
+//------------------------------------------------------------
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
 
@@ -13,15 +21,21 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
+    //-- <LayoutBuilder> decide entre layout Mobile ou Desktop --
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Layout para PC
+        
+        //----------------------------------
+        // <Layout Desktop> (constraints.maxWidth > 800)
+        // -- Layout em Row (Menu lateral | Painel)
+        //----------------------------------
         if (constraints.maxWidth > 800) {
           return Scaffold(
             backgroundColor: const Color(0xFFF5F5DC),
             body: Row(
               children: [
                 const SizedBox(width: 150),
+                //-- Coluna dos Botões --
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -36,16 +50,13 @@ class _ConfigPageState extends State<ConfigPage> {
                       onPressed: () {},
                     ),
                     ConfigButton(
-                      text: 'Termos de Uso',
-                      onPressed: () {},
-                    ),
-                    ConfigButton(
                       text: 'Central de ajuda/Fale Conosco',
                       onPressed: () {},
                     ),
                   ],
                 ),
                 const SizedBox(width: 60),
+                //-- Painel de Conteúdo (placeholder) --
                 Expanded(
                   child: Container(
                     height: 500,
@@ -62,7 +73,10 @@ class _ConfigPageState extends State<ConfigPage> {
           );
         }
 
-        // Layout para Mobile
+        //----------------------------------
+        // <Layout Mobile> (else)
+        // -- Layout em Column (Vertical)
+        //----------------------------------
         else {
           return Scaffold(
             backgroundColor: const Color(0xFFF7F5DC),
@@ -79,8 +93,8 @@ class _ConfigPageState extends State<ConfigPage> {
                         'Configurações',
                         style: GoogleFonts.quicksand(
                           fontWeight: FontWeight.w400,
-                          fontSize: 30, 
-                          color: Colors.black87, 
+                          fontSize: 30,
+                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 9),
@@ -90,10 +104,6 @@ class _ConfigPageState extends State<ConfigPage> {
                       ),
                       ConfigButton(
                         text: 'Modo Claro/Escuro',
-                        onPressed: () {},
-                      ),
-                      ConfigButton(
-                        text: 'Termos de Uso',
                         onPressed: () {},
                       ),
                       ConfigButton(

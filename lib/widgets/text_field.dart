@@ -1,3 +1,8 @@
+// Função: Um campo de entrada de texto estilizado.
+// Recebe:
+// - label: O rótulo exibido acima ou dentro do campo.
+// - obscureText: (Opcional) Se o texto deve ser ocultado (para senhas). Padrão é falso.
+// - controller: O controlador para gerenciar o texto do campo.
 import 'package:flutter/material.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +30,8 @@ class CustomTextField extends StatelessWidget {
         hoverColor: AppColors.backLightGreen,
         labelText: label,
         filled: true,
-        fillColor: AppColors.primary.withValues(),
+        // fillColor: AppColors.primary.withValues(), // .withValues() não existe, ajuste necessário
+        fillColor: AppColors.primary, // Usando a cor primária diretamente
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,

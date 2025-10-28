@@ -1,9 +1,18 @@
+//============================================================
+// ARQUIVO: views/home_page.dart
+//============================================================
 import 'package:flutter/material.dart';
 import 'package:grene/views/config_page.dart';
 import 'package:grene/views/plants_page.dart';
 import 'package:grene/theme/colors/app_colors.dart';
 import 'package:grene/views/user_page.dart';
 
+//------------------------------------------------------------
+// <HomePage> (View)
+// -- Propósito: Container principal da navegação (Shell).
+// -- Gerencia a troca entre as páginas: User, Plants e Config.
+// -- Layout: Responsivo (Mobile/Desktop).
+//------------------------------------------------------------
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   @override
@@ -11,8 +20,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
+  //-- Estado: Controla a aba/página selecionada --
+  int _selectedIndex = 1; // Inicia na página de Plantas
   final List<Widget> _pages = [UserPage(), PlantsPage(), ConfigPage()];
+
+  //-- Ação: Atualiza o índice da página selecionada --
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -21,8 +33,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //-- <LayoutBuilder> decide a navegação (AppBar vs BottomNavBar) --
     return LayoutBuilder(
       builder: (context, constraints) {
+        
+        //----------------------------------
+        // <Layout Desktop> (constraints.maxWidth > 800)
+        // -- Navegação via <AppBar> com TextButtons.
+        //----------------------------------
         if (constraints.maxWidth > 800) {
           return Scaffold(
             backgroundColor: AppColors.background,
@@ -58,11 +76,18 @@ class _HomePageState extends State<HomePage> {
               ),
               centerTitle: true,
             ),
+            //-- Exibe a página selecionada --
             body: _pages[_selectedIndex],
           );
+        
+        //----------------------------------
+        // <Layout Mobile> (else)
+        // -- Navegação via <BottomNavigationBar>.
+        //----------------------------------
         } else {
           return Scaffold(
             backgroundColor: AppColors.background,
+            //-- Exibe a página selecionada --
             body: _pages[_selectedIndex],
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: AppColors.primary,

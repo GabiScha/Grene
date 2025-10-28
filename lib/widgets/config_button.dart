@@ -1,3 +1,7 @@
+// Função: Um botão estilizado para telas de configuração.
+// Recebe:
+// - text: O rótulo exibido no botão.
+// - onPressed: A função a ser chamada quando o botão é pressionado.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

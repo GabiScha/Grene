@@ -1,13 +1,23 @@
-// controllers/auth_controller.dart
+//============================================================
+// ARQUIVO: controllers/auth_controller.dart
+//============================================================
 import 'package:grene/services/api_service.dart';
 
-/// Controller responsável por autenticação do usuário.
-/// 
-/// Atua como intermediário entre as views e o [ApiService].
+//------------------------------------------------------------
+// <AuthController>
+// -- Propósito: Controlar o fluxo de autenticação do usuário.
+// -- Atua como um intermediário entre as <Views> e o <ApiService>.
+//------------------------------------------------------------
 class AuthController {
-  /// Realiza o login chamando o [ApiService].
-  /// 
-  /// Retorna `true` se o login for bem-sucedido, `false` caso contrário.
+  
+  //------------------------------------------------------------
+  // <login>
+  // -- Descrição: Realiza a chamada de login na API.
+  // -- Parâmetros:
+  //   -> username: Nome do usuário.
+  //   -> password: Senha do usuário.
+  // -- Retorno: <bool> -> true se o login for bem-sucedido, false caso contrário.
+  //------------------------------------------------------------
   static Future<bool> login(String username, String password) async {
     return await ApiService.login(username, password);
   }

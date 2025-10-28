@@ -1,3 +1,7 @@
+// Função: Um botão estilizado especificamente para ações de sair ou logout.
+// Recebe:
+// - text: O rótulo exibido no botão.
+// - onPressed: A função a ser chamada quando o botão é pressionado.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +14,7 @@ class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double fontSize = screenWidth > 800 ? 22 : 18; 
+    double fontSize = screenWidth > 800 ? 22 : 18;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

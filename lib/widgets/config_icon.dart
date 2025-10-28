@@ -1,3 +1,5 @@
+// Função: Exibe o ícone de configuração (imagem de engrenagem em um container estilizado).
+// Recebe: Nada.
 import 'package:flutter/material.dart';
 
 class ConfigIcon extends StatelessWidget {
@@ -9,7 +11,7 @@ class ConfigIcon extends StatelessWidget {
       width: 140,
       height: 140,
       decoration: BoxDecoration(
-        color: const Color(0xFF40985E), 
+        color: const Color(0xFF40985E),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Stack(

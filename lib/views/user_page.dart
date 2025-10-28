@@ -97,7 +97,7 @@ class _UserPageState extends State<UserPage> {
                     child: _selectedTerm == null
                         ? Center(
                             child: Text(
-                              'Selecione um termo para visualizar',
+                              '',
                               style: GoogleFonts.quicksand(fontSize: 18),
                             ),
                           )

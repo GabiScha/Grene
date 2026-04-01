@@ -7,7 +7,7 @@ import 'theme/colors/app_colors.dart';
 import 'services/storage_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // 🔹 obrigatório antes de usar SharedPreferences
+  WidgetsFlutterBinding.ensureInitialized();
   bool isDark = await StorageService.getTheme();
   AppColors.load(isDark);
   runApp(const GreneApp());

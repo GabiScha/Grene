@@ -82,7 +82,7 @@ class ApiService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final newAccess = data["access"];
-      final newRefresh = data["refresh"] ?? refresh; // Reusa o refresh antigo se um novo não for enviado
+      final newRefresh = data["refresh"] ?? refresh; 
       await StorageService.saveTokens(newAccess, newRefresh);
       return true;
     }
@@ -133,9 +133,9 @@ class ApiService {
         response = await http.get(uri, headers: headers);
     }
 
-    // 🔹 Se token expirou (401) ou proibido (403)
+    // Se token expirou (401) ou proibido (403)
     if ([401, 403].contains(response.statusCode)) {
-      final refreshed = await refreshToken(); // Tenta renovar
+      final refreshed = await refreshToken();
       
       if (refreshed) {
         //-- SUCESSO NO REFRESH: Repete a requisição --
@@ -163,9 +163,9 @@ class ApiService {
             response = await http.get(uri, headers: headers);
         }
       } else {
-        // 🔹 Refresh falhou → limpar tokens e lançar exceção
+        // Refresh falhou → limpar tokens e lançar exceção
         await StorageService.clearTokens();
-        throw TokenExpiredException(); // lança exceção personalizada
+        throw TokenExpiredException(); 
       }
     }
 

@@ -2,7 +2,7 @@
 // ARQUIVO: views/login_page.dart
 //============================================================
 import 'package:flutter/material.dart';
-import '../services/api_service.dart'; // Alterado de AuthController para ApiService
+import '../services/api_service.dart'; 
 import '../theme/colors/app_colors.dart';
 import '../widgets/green_button.dart';
 import '../widgets/text_field.dart';

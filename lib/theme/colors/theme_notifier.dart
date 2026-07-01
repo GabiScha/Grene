@@ -18,13 +18,13 @@ class ThemeNotifier extends ChangeNotifier {
   void toggleTheme() async {
     _isDark = !_isDark;
     await StorageService.saveTheme(_isDark);
-    AppColors.load(_isDark); // 🔹 atualiza cores globais
+    AppColors.load(_isDark); 
     notifyListeners();
   }
 
   Future<void> _loadTheme() async {
     _isDark = await StorageService.getTheme();
-    AppColors.load(_isDark); // 🔹 inicializa cores corretas
+    AppColors.load(_isDark); 
     notifyListeners();
   }
 }

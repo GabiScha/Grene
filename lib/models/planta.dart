@@ -26,7 +26,7 @@ class Planta {
     required this.nome,
     required this.tipo,
     required this.estado,
-    required this.img, // 🆕
+    required this.img, 
     this.slug,
     this.favorito,
   });

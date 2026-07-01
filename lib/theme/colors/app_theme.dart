@@ -6,7 +6,7 @@ class AppTheme {
   AppColors.load(false);
 
   final colorScheme = ColorScheme.fromSeed(
-    seedColor: AppColors.primary, // verde é a base
+    seedColor: AppColors.primary, 
     brightness: Brightness.light,
   ).copyWith(
     background: AppColors.background,
@@ -18,8 +18,8 @@ class AppTheme {
   return ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.background,
-    colorScheme: colorScheme, // usa esse esquema de cores
-    useMaterial3: true, // importante se vc estiver no Material 3
+    colorScheme: colorScheme, 
+    useMaterial3: true, 
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primary,
       foregroundColor: AppColors.text,
@@ -48,7 +48,7 @@ class AppTheme {
   AppColors.load(false);
 
   final colorScheme = ColorScheme.fromSeed(
-    seedColor: AppColors.primary, // verde é a base
+    seedColor: AppColors.primary, 
     brightness: Brightness.light,
   ).copyWith(
     background: AppColors.background,
@@ -60,8 +60,8 @@ class AppTheme {
   return ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
-    colorScheme: colorScheme, // usa esse esquema de cores
-    useMaterial3: true, // importante se vc estiver no Material 3
+    colorScheme: colorScheme,
+    useMaterial3: true, 
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primary,
       foregroundColor: AppColors.text,
